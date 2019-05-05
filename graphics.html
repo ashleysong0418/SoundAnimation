@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Animation</title>
+    <link rel="stylesheet" type="text/css" href="graphicsCSS.css">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.1.2/howler.js"></script>
+    <script type="text/javascript" src="paper-full.js"></script>
+
+    <script type="text/paperscript" canvas="myCanvas">
+      var keyData = {
+        q: {
+          sound: new Howl({
+            src: ['sounds/bubbles.mp3']
+          }),
+
+        },
+        w: {
+          sound: new Howl({
+            src: ['sounds/clay.mp3']
+          }),
+
+        },
+        e: {
+          sound: new Howl({
+            src: ['sounds/confetti.mp3']
+          }),
+
+        },
+        r: {
+          sound: new Howl({
+            src: ['sounds/corona.mp3']
+          }),
+
+        },
+          t: {
+          sound: new Howl({
+            src: ['sounds/dotted-spiral.mp3']
+          }),
+
+        },
+        y: {
+          sound: new Howl({
+            src: ['sounds/flash-1.mp3']
+          }),
+
+        },
+        u: {
+          sound: new Howl({
+            src: ['sounds/flash-2.mp3']
+          }),
+
+        },
+        i: {
+          sound: new Howl({
+            src: ['sounds/flash-3.mp3']
+          }),
+
+        },
+        o: {
+          sound: new Howl({
+            src: ['sounds/glimmer.mp3']
+          }),
+
+        },
+        p: {
+          sound: new Howl({
+            src: ['sounds/moon.mp3']
+          }),
+
+        },
+        a: {
+          sound: new Howl({
+            src: ['sounds/pinwheel.mp3']
+          }),
+
+        },
+        s: {
+          sound: new Howl({
+            src: ['sounds/piston-1.mp3']
+          }),
+
+        },
+          d: {
+          sound: new Howl({
+            src: ['sounds/piston-2.mp3']
+          }),
+
+        },
+        f: {
+          sound: new Howl({
+            src: ['sounds/prism-1.mp3']
+          }),
+
+        },
+        g: {
+          sound: new Howl({
+            src: ['sounds/prism-2.mp3']
+          }),
+
+        },
+        h: {
+          sound: new Howl({
+            src: ['sounds/prism-3.mp3']
+          }),
+
+        },
+        j: {
+          sound: new Howl({
+            src: ['sounds/splits.mp3']
+          }),
+
+        },
+        k: {
+          sound: new Howl({
+            src: ['sounds/squiggle.mp3']
+          }),
+
+        },
+        l: {
+          sound: new Howl({
+            src: ['sounds/strike.mp3']
+          }),
+
+        },
+        z: {
+          sound: new Howl({
+            src: ['sounds/suspension.mp3']
+          }),
+
+        },
+        x: {
+          sound: new Howl({
+            src: ['sounds/timer.mp3']
+          }),
+
+        },
+        c: {
+          sound: new Howl({
+            src: ['sounds/ufo.mp3']
+          }),
+
+        },
+        v: {
+          sound: new Howl({
+            src: ['sounds/veil.mp3']
+          }),
+
+        },
+        b: {
+          sound: new Howl({
+            src: ['sounds/wipe.mp3']
+          }),
+        },
+        n: {
+          sound: new Howl({
+            src: ['sounds/zig-zag.mp3']
+          }),
+
+        },
+        m: {
+          sound: new Howl({
+            src: ['sounds/moon.mp3']
+          }),
+
+        }
+      }
+
+      // The amount of segment points we want to create:
+        var amount = 5;
+
+        // The maximum height of the wave:
+        var height = 100;
+        var height1 = 300;
+        var height2 = 500;
+
+        // Create a new path and style it:
+        var path = new Path({
+        	// 80% black:
+        	strokeColor: [0.8],
+        	strokeWidth: 10,
+        	strokeCap: 'square'
+        });
+
+        var path1 = new Path({
+        	// 80% black:
+        	strokeColor: [0.8],
+        	strokeWidth: 10,
+        	strokeCap: 'square'
+        });
+
+        var path2 = new Path({
+        	// 80% black:
+        	strokeColor: [.8],
+        	strokeWidth: 10,
+        	strokeCap: 'square'
+        });
+
+        // Add 5 segment points to the path spread out
+        // over the width of the view:
+        for (var i = 0; i <= amount; i++) {
+        	path.add(new Point(i / amount, 1) * view.size);
+          path1.add(new Point(i / amount, 1) * view.size);
+          path2.add(new Point(i / amount, 1) * view.size);
+        }
+
+
+
+        // Select the path, so we can see how it is constructed:
+        //path.selected = true;
+
+        function onKeyDown(event) {
+          if(keyData[event.key]){
+            var red = Math.random();
+            var green = Math.random();
+            var blue = Math.random();
+            path.strokeColor = new Color(red, green, blue);
+            path1.strokeColor = new Color(red, green, blue);
+            path2.strokeColor = new Color(red, green, blue);
+          	for (var i = 0; i <= amount; i++) {
+          		var segment = path.segments[i];
+              var segment1 = path1.segments[i];
+              var segment2 = path2.segments[i];
+
+          		// A cylic value between -1 and 1
+          		var sinus = Math.random() * 100 + height;
+              var sinus1 = Math.random() * 100 + height1;
+              var sinus2 = Math.random() * 100 + height2;
+
+          		// Change the y position of the segment point:
+          		segment.point.y = sinus;
+              segment1.point.y = sinus1;
+              segment2.point.y = sinus2;
+
+          	}
+          	// Uncomment the following line and run the script again
+          	// to smooth the path:
+          	 path.smooth();
+             path1.smooth();
+             path2.smooth();
+             keyData[event.key].sound.play();
+          }
+
+        	// Loop through the segments of the path:
+
+        }
+
+
+
+
+    </script>
+  </head>
+  <body>
+    <canvas id="myCanvas" resize></canvas>
+  </body>
+</html>
